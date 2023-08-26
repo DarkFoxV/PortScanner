@@ -1,4 +1,3 @@
-import threading
 from datetime import datetime
 import nmap
 import ipaddress
@@ -105,14 +104,14 @@ def main_menu():
             print("1.PortScan\n2.Fiware detector\n3.PhpAdmin Detector\n4.Exit")
             option = int(input("Insira uma opção: "))
         if option == 1:
-            begin = int(input("Insira a porta inicial: "))
+            inicial_port = int(input("Insira a porta inicial: "))
             end = int(input("Insira a porta final: "))
             now = str(datetime.now())
             now = now.replace(":", "_")
             with concurrent.futures.ThreadPoolExecutor(max_workers=24) as executor:
                 for addr in host_list:
                     count += 1
-                    executor.submit(portscanner, count,str(addr),begin, end)
+                    executor.submit(portscanner, count, str(addr), inicial_port, end)
 
         elif option == 2:
             now = str(datetime.now())
@@ -141,6 +140,6 @@ scanner = nmap.PortScanner()
 log_data = []
 target = ""
 end = 0
-begin = 0
+inicial_port = 0
 main_menu()
 print(log_data)
