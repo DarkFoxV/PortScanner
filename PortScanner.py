@@ -79,9 +79,7 @@ def phpadmin(name,ip_target=''):
         res = str(res)
         if res.find("open") != -1:
             count += 1
-            print("Opened")
         else:
-            print("Closed")
             break
 
     if count == 2:
