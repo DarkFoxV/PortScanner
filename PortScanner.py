@@ -72,17 +72,19 @@ def fiware(ip_target, name):
 
 def phpadmin(name,ip_target=''):
     global log_data
-    status_list = ([''] * 3)
-    scan_list = ('3306', '80', '8080', '443')
+    scan_list = ('3306', '80')
     count = 0
     for i in scan_list:
         res = scanner.scan(ip_target, i)
         res = str(res)
         if res.find("open") != -1:
             count += 1
+            print("Opened")
         else:
+            print("Closed")
             break
-    if count == 4:
+
+    if count == 2:
         log_data.append({"Id": name, "Status": "PhpAdmin Detected", "Ip": ip_target})
 
     else:
@@ -91,17 +93,20 @@ def phpadmin(name,ip_target=''):
 
 def main_menu():
     global target, now, host_list
-    count = 0
-    host_list = []
     while True:
+        host_list = []
+        count = 0
         option = -1
         if option <= 0 or option >= 4:
             target = input("Insira um ip alvo: ")
-            print("Criando lista de alvos")
-            with concurrent.futures.ThreadPoolExecutor(max_workers=24) as executor:
-                for i in target_list(target):
-                    executor.submit(scan_host, i)
-            print("1.PortScan\n2.Fiware detector\n3.PhpAdmin Detector\n4.Exit")
+            if target.find ("/") != -1:
+                print("Criando lista de alvos")
+                with concurrent.futures.ThreadPoolExecutor(max_workers=24) as executor:
+                    for i in target_list(target):
+                        executor.submit(scan_host, i)
+            else:
+                host_list.append(target)
+            print("1.PortScan\n2.Fiware detector\n3.PhpMyAdmin Detector\n4.Exit")
             option = int(input("Insira uma opção: "))
         if option == 1:
             inicial_port = int(input("Insira a porta inicial: "))
