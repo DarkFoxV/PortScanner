@@ -70,7 +70,7 @@ def fiware(ip_target, name):
         log_data.append({'Id': name, 'Status': 'Fiware Not Dectected', 'Ip': ip_target})
 
 
-def phpadmin(name,ip_target=''):
+def phpmyadmin(name, ip_target=''):
     global log_data
     scan_list = ('3306', '80')
     count = 0
@@ -83,17 +83,18 @@ def phpadmin(name,ip_target=''):
             break
 
     if count == 2:
-        log_data.append({"Id": name, "Status": "PhpAdmin Detected", "Ip": ip_target})
+        log_data.append({"Id": name, "Status": "PhpMyAdmin Detected", "Ip": ip_target})
 
     else:
-        log_data.append({"Id": name, "Status": "PhpAdmin Not Detected", "Ip": ip_target})
+        log_data.append({"Id": name, "Status": "PhpMyAdmin Not Detected", "Ip": ip_target})
 
 
 def main_menu():
-    global target, now, host_list
+    global target, now, host_list, log_data
     while True:
         host_list = []
         count = 0
+        log_data = []
         option = -1
         if option <= 0 or option >= 4:
             target = input("Insira um ip alvo: ")
@@ -131,7 +132,7 @@ def main_menu():
             with concurrent.futures.ThreadPoolExecutor(max_workers=24) as executor:
                 for addr in host_list:
                     count += 1
-                    executor.submit(phpadmin, count,str(addr))
+                    executor.submit(phpmyadmin, count, str(addr))
                 print("Escaneando Alvos, Espere!!!")
         else:
             break
