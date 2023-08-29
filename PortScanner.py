@@ -15,7 +15,7 @@ def target_list(ip_target):
 
 
 def scan_host(i):
-    scan_range = scanner.scan(hosts=i, arguments='-n -sP -PE -PA21,23,80,3389')
+    scan_range = scanner.scan(hosts=i, arguments='-n -sP -PE')
     scan_range = scan_range['scan'][i]
     scan_range = str(scan_range)
     if scan_range.find("up") != -1:
@@ -87,25 +87,25 @@ def phpmyadmin(name, ip_target=''):
 
     else:
         log_data.append({"Id": name, "Status": "PhpMyAdmin Not Detected", "Ip": ip_target})
-
+def call_target_list():
+    global target, host_list
+    target = input("Insira um ip alvo: ")
+    if target.find("/") != -1:
+        print("Criando lista de alvos")
+        with concurrent.futures.ThreadPoolExecutor(max_workers=24) as executor:
+            for i in target_list(target):
+                executor.submit(scan_host, i)
+    else:
+        host_list.append(target)
 
 def main_menu():
     global target, now, host_list, log_data
     while True:
-        host_list = []
         count = 0
         log_data = []
         option = -1
-        if option <= 0 or option >= 4:
-            target = input("Insira um ip alvo: ")
-            if target.find ("/") != -1:
-                print("Criando lista de alvos")
-                with concurrent.futures.ThreadPoolExecutor(max_workers=24) as executor:
-                    for i in target_list(target):
-                        executor.submit(scan_host, i)
-            else:
-                host_list.append(target)
-            print("1.PortScan\n2.Fiware detector\n3.PhpMyAdmin Detector\n4.Exit")
+        if option <= 0 or option >= 5:
+            print("1.PortScan\n2.Fiware detector\n3.PhpMyAdmin Detector\n4.Recreate target list\n5.Exit")
             option = int(input("Insira uma opção: "))
         if option == 1:
             inicial_port = int(input("Insira a porta inicial: "))
@@ -116,7 +116,7 @@ def main_menu():
                 for addr in host_list:
                     count += 1
                     executor.submit(portscanner, count, str(addr), inicial_port, end)
-
+            logging(log_data)
         elif option == 2:
             now = str(datetime.now())
             now = now.replace(":", "_")
@@ -125,7 +125,7 @@ def main_menu():
                     count += 1
                     executor.submit(fiware, str(addr), count)
                 print("Escaneando Alvos, Espere!!!")
-
+            logging(log_data)
         elif option == 3:
             now = str(datetime.now())
             now = now.replace(":", "_")
@@ -134,9 +134,12 @@ def main_menu():
                     count += 1
                     executor.submit(phpmyadmin, count, str(addr))
                 print("Escaneando Alvos, Espere!!!")
+            logging(log_data)
+        elif option == 4:
+            host_list = []
+            call_target_list()
         else:
             break
-        logging(log_data)
 
 host_list = []
 now = ""
@@ -145,5 +148,6 @@ log_data = []
 target = ""
 end = 0
 inicial_port = 0
+call_target_list()
 main_menu()
 print(log_data)
