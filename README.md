@@ -17,5 +17,5 @@ verifica se o serviço PWP Admin está ativo na máquina
 # 4- Recreate target list 
 Recria a lista de alvos
 
-#5- Exit 
+# 5- Exit 
 encerra o programa
