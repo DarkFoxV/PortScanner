@@ -11,7 +11,7 @@ ele verifica se a porta está aberta ou fechada
 # 2- Fiware 
 verifca se o serviço Fiware está ativo na máquina)
 
-# 3- PWP Admin 
+# 3- PHP MY Admin 
 verifica se o serviço PWP Admin está ativo na máquina
 
 # 4- Recreate target list 
