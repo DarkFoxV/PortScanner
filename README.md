@@ -6,7 +6,11 @@ caso o usuário escolha colocar somente o ip alvo(sem a máscara), ele atacara s
 Após inserir o ip, o usuário sera levado a tela de opções, onde há 5 modos de scan
 
 1- Port Scaner(ele verifica se a porta está aberta ou fechada)
+
 2- Fiware (verifca se o serviço Fiware está ativo na máquina)
+
 3- PWP Admin (verifica se o serviço PWP Admin está ativo na máquina)
+
 4- Recreate target list (Recria a lista de alvos)
+
 5- Exit (encerra o programa)
