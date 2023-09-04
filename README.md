@@ -5,7 +5,7 @@ caso o usuário escolha colocar um ip com a máscara ele conseguira atacar vári
 caso o usuário escolha colocar somente o ip alvo(sem a máscara), ele atacara somente o ip colocado.
 Após inserir o ip, o usuário sera levado a tela de opções, onde há 4 modos de scan
 
-# 1- Port Scaner
+# 1- Port Scanner
 ele verifica se a porta está aberta ou fechada
 
 # 2- Fiware 
